@@ -49,7 +49,8 @@ class EnhancedSpanishAIDetector {
             patterns: this.detectRepetitivePatterns(text),
             naturalness: this.calculateNaturalness(text),
             connectors: this.analyzeConnectors(text),
-            burstiness: this.calculateBurstiness(text)
+            burstiness: this.calculateBurstiness(text),
+            manipulation: this.detectManipulation(text)
         };
 
         // If API is enabled, get perplexity scores
@@ -273,14 +274,36 @@ class EnhancedSpanishAIDetector {
         const lowerText = text.toLowerCase();
         let patternScore = 0;
 
+        // Detect phrase stuffing attacks (same phrase repeated many times)
+        const sentences = this.getSentences(text);
+        const phraseStuffingPatterns = [
+            'conviene destacar que', 'es importante señalar', 'cabe mencionar que',
+            'vale la pena', 'es fundamental', 'resulta evidente'
+        ];
+
+        phraseStuffingPatterns.forEach(phrase => {
+            const count = (lowerText.match(new RegExp(phrase, 'g')) || []).length;
+            if (count > sentences.length * 0.5) {
+                // If phrase appears in more than 50% of sentences, it's stuffing
+                patternScore += 50; // Heavy penalty
+            } else if (count >= 3) {
+                // Same phrase 3+ times is suspicious
+                patternScore += count * 25;
+            }
+        });
+
         this.aiPatterns.formulaicPhrases.forEach(phrase => {
             const count = (lowerText.match(new RegExp(phrase, 'g')) || []).length;
-            patternScore += count * 20;  // Increased weight
+            if (count === 1) {
+                patternScore += 20;  // Single occurrence
+            } else if (count >= 2) {
+                patternScore += count * 30;  // Multiple occurrences are very suspicious
+            }
         });
 
         this.aiPatterns.perfectStructures.forEach(structure => {
             const count = (lowerText.match(new RegExp('\\b' + structure + '\\b', 'g')) || []).length;
-            patternScore += count * 15;  // Increased weight
+            patternScore += count * 15;
         });
 
         return Math.min(100, patternScore);
@@ -349,29 +372,67 @@ class EnhancedSpanishAIDetector {
         return connectorScore;
     }
 
+    detectManipulation(text) {
+        let manipulationScore = 0;
+
+        // Check for unnatural capitalization (missing capitals, all lowercase)
+        const sentences = text.split(/[.!?]+/).map(s => s.trim()).filter(s => s.length > 0);
+        let lowercaseStarts = 0;
+
+        sentences.forEach(sentence => {
+            if (sentence.length > 0 && sentence[0] === sentence[0].toLowerCase()) {
+                lowercaseStarts++;
+            }
+        });
+
+        const lowercaseRatio = lowercaseStarts / sentences.length;
+        if (lowercaseRatio > 0.5) {
+            // More than 50% of sentences start lowercase = manipulation
+            manipulationScore += 60;
+        }
+
+        // Check for run-on sentences (very long sentences without proper punctuation)
+        const avgSentenceLength = text.length / sentences.length;
+        if (avgSentenceLength > 200) {
+            manipulationScore += 40;
+        }
+
+        // Check for suspicious paragraph structure (single paragraph wall of text)
+        const paragraphs = text.split('\n\n').filter(p => p.trim().length > 0);
+        const words = text.split(/\s+/).length;
+        if (paragraphs.length === 1 && words > 100) {
+            // Single paragraph with 100+ words often indicates manipulation
+            manipulationScore += 30;
+        }
+
+        return Math.min(100, manipulationScore);
+    }
+
     calculateAIProbability(metrics, usingAPI) {
         let weights;
 
         if (usingAPI && metrics.perplexity !== undefined) {
             // Enhanced weights when using API
             weights = {
-                perplexity: 0.35,      // Perplexity is the most reliable indicator
-                burstiness: 0.20,      // Burstiness is also very important
+                perplexity: 0.30,      // Perplexity is the most reliable indicator
+                burstiness: 0.18,      // Burstiness is also very important
                 patterns: 0.18,        // Increased from 0.12
-                uniformity: 0.10,
+                manipulation: 0.12,    // NEW: Detect anti-detection tricks
+                uniformity: 0.08,
                 naturalness: 0.08,     // Increased from 0.05
-                complexity: 0.05,
-                sentenceVariation: 0.04
+                complexity: 0.03,
+                sentenceVariation: 0.03
             };
         } else {
             // Local-only weights - rebalanced for better accuracy
             weights = {
-                patterns: 0.30,        // Increased from 0.25
-                naturalness: 0.20,     // Increased from 0.15
-                uniformity: 0.18,      // Decreased from 0.20
-                sentenceVariation: 0.15,
-                connectors: 0.12,      // Increased from 0.10
-                complexity: 0.05       // Decreased from 0.15
+                patterns: 0.28,        // Slightly decreased to make room for manipulation
+                naturalness: 0.18,
+                manipulation: 0.15,    // NEW: High weight for detecting tricks
+                uniformity: 0.15,
+                sentenceVariation: 0.12,
+                connectors: 0.10,
+                complexity: 0.02
             };
         }
 
@@ -381,6 +442,11 @@ class EnhancedSpanishAIDetector {
                 probability += metrics[key] * weights[key];
             }
         });
+
+        // If manipulation is detected, add a bonus
+        if (metrics.manipulation && metrics.manipulation > 50) {
+            probability = Math.min(100, probability + 10);
+        }
 
         return Math.round(probability);
     }
@@ -486,6 +552,11 @@ class EnhancedSpanishAIDetector {
                 { max: 30, text: 'Baja (IA)', class: 'high' },
                 { max: 60, text: 'Media', class: 'medium' },
                 { max: 100, text: 'Alta (Humano)', class: 'low' }
+            ],
+            manipulation: [
+                { max: 30, text: 'No detectada', class: 'low' },
+                { max: 60, text: 'Posible manipulación', class: 'medium' },
+                { max: 100, text: 'Manipulación detectada', class: 'high' }
             ]
         };
 
@@ -610,6 +681,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateMetric('patterns', results.metrics.patterns, detector);
         updateMetric('naturalness', results.metrics.naturalness, detector);
         updateMetric('connectors', results.metrics.connectors, detector);
+        updateMetric('manipulation', results.metrics.manipulation, detector);
 
         // Show additional metrics if using API
         if (results.metrics.burstiness !== undefined) {

@@ -13,6 +13,7 @@ Un detector avanzado de contenido generado por IA para textos en español, con i
 - **Patrones repetitivos**: Identifica frases formulaicas comunes en textos de IA
 - **Naturalidad lingüística**: Detecta la presencia de coloquialismos vs. lenguaje formal
 - **Uso de conectores**: Analiza la densidad de conectores textuales
+- **Detección de manipulación**: Identifica intentos de evadir detección (phrase stuffing, capitalización anormal, etc.)
 
 ### Modo Mejorado (Con API de Hugging Face)
 Todas las características del modo local, más:
@@ -148,6 +149,18 @@ Guarda el archivo y recarga la página en tu navegador. Verás que la advertenci
 - **Conectores**: Uso excesivo = más probable IA
 - **Burstiness** (solo con API): Baja variabilidad = más probable IA
 - **Perplejidad** (solo con API): Baja perplejidad = más probable IA
+- **Manipulación detectada**: Detecta intentos de engañar al detector
+
+### Detección Anti-Evasión
+
+El detector incluye protección contra técnicas comunes para evadir detección:
+
+1. **Phrase Stuffing**: Detecta cuando se repite la misma frase (ej: "Conviene destacar que") en múltiples oraciones
+2. **Capitalización anormal**: Identifica texto con capitalización incorrecta o ausente
+3. **Oraciones corridas**: Detecta oraciones excesivamente largas sin puntuación apropiada
+4. **Estructura manipulada**: Identifica bloques de texto sin formato apropiado
+
+⚠️ **Advertencia**: Si usas herramientas que solo agregan frases repetitivas o modifican capitalización para "engañar" detectores, nuestro sistema lo detectará y **aumentará** la probabilidad de IA.
 
 ## Modelo Utilizado
 
