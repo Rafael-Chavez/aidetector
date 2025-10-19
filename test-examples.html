@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplos de Prueba - Detector de IA</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 { color: #333; }
+        .example {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .example h3 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .example-text {
+            background: #f9fafb;
+            padding: 15px;
+            border-left: 4px solid #667eea;
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+        .label {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .ai { background: #fee2e2; color: #dc2626; }
+        .human { background: #d1fae5; color: #059669; }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #5568d3;
+        }
+        .link {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Ejemplos de Prueba para el Detector de IA</h1>
+    <p>Usa estos ejemplos para probar el detector. Haz clic en "Copiar" y pégalos en el detector.</p>
+
+    <div class="link">
+        <a href="index.html" target="_blank">➡️ Abrir Detector de IA</a>
+    </div>
+
+    <!-- Ejemplo 1: Texto generado por IA -->
+    <div class="example">
+        <span class="label ai">Probable IA</span>
+        <h3>Ejemplo 1: Texto académico sobre tecnología</h3>
+        <div class="example-text" id="example1">
+La inteligencia artificial ha experimentado un crecimiento notable en los últimos años. Es importante destacar que esta tecnología presenta múltiples aplicaciones en diversos sectores. En primer lugar, cabe señalar que el sector de la salud se ha beneficiado significativamente. Por otro lado, es fundamental mencionar que la educación también ha integrado estas herramientas. En consecuencia, resulta evidente que la IA continuará transformando nuestra sociedad. Asimismo, es preciso señalar que existen desafíos éticos importantes. No obstante, las ventajas superan ampliamente las limitaciones actuales. Finalmente, podemos afirmar que estamos ante una revolución tecnológica sin precedentes.
+        </div>
+        <button onclick="copyText('example1')">📋 Copiar texto</button>
+    </div>
+
+    <!-- Ejemplo 2: Texto humano natural -->
+    <div class="example">
+        <span class="label human">Probable Humano</span>
+        <h3>Ejemplo 2: Mensaje personal informal</h3>
+        <div class="example-text" id="example2">
+Ayer fui al mercado y no te imaginas lo que pasó. Estaba buscando tomates cuando de repente veo a mi vecino discutiendo con el vendedor por el precio de unas naranjas. ¡Qué escena! Me quedé ahí mirando, un poco incómodo la verdad. Al final intervine y les dije "venga, que no es para tanto", y pues... se calmaron un poco. Pero bueno, compré mis cosas rapidito y me fui. Estas cosas solo me pasan a mí, ¿no? Luego en casa me acordé y me dio risa.
+        </div>
+        <button onclick="copyText('example2')">📋 Copiar texto</button>
+    </div>
+
+    <!-- Ejemplo 3: Texto IA con muchos conectores -->
+    <div class="example">
+        <span class="label ai">Muy Probable IA</span>
+        <h3>Ejemplo 3: Artículo sobre cambio climático</h3>
+        <div class="example-text" id="example3">
+El cambio climático constituye uno de los desafíos más importantes de nuestro tiempo. En este sentido, es fundamental comprender que las emisiones de gases de efecto invernadero representan la principal causa. Por consiguiente, resulta necesario implementar medidas efectivas de mitigación. De acuerdo con los expertos, la temperatura global ha aumentado considerablemente. Asimismo, cabe destacar que los fenómenos meteorológicos extremos se han intensificado. En relación con este tema, es preciso mencionar que la acidificación oceánica presenta graves consecuencias. Por lo tanto, podemos afirmar que se requiere acción inmediata. En conclusión, la cooperación internacional resulta indispensable para abordar esta problemática de manera efectiva.
+        </div>
+        <button onclick="copyText('example3')">📋 Copiar texto</button>
+    </div>
+
+    <!-- Ejemplo 4: Texto humano con opiniones -->
+    <div class="example">
+        <span class="label human">Probable Humano</span>
+        <h3>Ejemplo 4: Reseña de película</h3>
+        <div class="example-text" id="example4">
+Acabo de ver la nueva película de terror que todos recomiendan y... meh. No sé, esperaba más. Los primeros 20 minutos están bien, crean ambiente y todo eso. ¿Pero el resto? Predecible a más no poder. Ya sabes cómo va: sustos baratos, música fuerte de repente, y el típico gato que aparece de la nada. La protagonista hace cosas súper tontas (¿quién baja al sótano oscuro SIN linterna?). Eso sí, la fotografía está chula. Pero vamos, que para lo que cuesta el cine ahora... mejor la hubiera visto en casa. Le doy un 5/10 y siendo generoso.
+        </div>
+        <button onclick="copyText('example4')">📋 Copiar texto</button>
+    </div>
+
+    <!-- Ejemplo 5: Mezcla (humano editando IA) -->
+    <div class="example">
+        <span class="label ai">Probabilidad Media</span>
+        <h3>Ejemplo 5: Blog post sobre viajes</h3>
+        <div class="example-text" id="example5">
+Mi viaje a Barcelona fue increíble. La ciudad ofrece una combinación única de arquitectura modernista y cultura mediterránea. Visité la Sagrada Familia, que sinceramente me dejó sin palabras - las fotos no le hacen justicia. También es importante mencionar que la gastronomía catalana es excepcional. Probé unas tapas buenísimas en el Barrio Gótico. Luego me perdí un poco buscando el metro, pero bueno, así conoces mejor la ciudad ¿no? En definitiva, Barcelona es un destino que vale la pena visitar. Los precios están un poco altos eso sí, pero se puede ajustar el presupuesto si buscas bien.
+        </div>
+        <button onclick="copyText('example5')">📋 Copiar texto</button>
+    </div>
+
+    <!-- Ejemplo 6: Texto muy humano con errores -->
+    <div class="example">
+        <span class="label human">Muy Probable Humano</span>
+        <h3>Ejemplo 6: Mensaje de WhatsApp</h3>
+        <div class="example-text" id="example6">
+Tío no me lo creo todavía jajaja. Resulta que hoy en el trabajo el jefe entra y dice que tenemos que quedarnos hasta tarde. OTRA VEZ. Y yo ahí, con mi cara de poker porque tenía planes... Pero nada, al final nos fuimos a las 7 (podría haber sido peor). Ahora estoy aquí tirado en el sofá sin ganas de nada. Mañana te cuento mejor, que estoy muerto de sueño. Pd: me debes esa birra del otro día eh! No te hagas el loco
+        </div>
+        <button onclick="copyText('example6')">📋 Copiar texto</button>
+    </div>
+
+    <div class="link">
+        <a href="index.html" target="_blank">➡️ Probar estos textos en el Detector</a>
+    </div>
+
+    <script>
+        function copyText(elementId) {
+            const text = document.getElementById(elementId).textContent.trim();
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ Texto copiado! Ahora pégalo en el detector.');
+            }).catch(err => {
+                alert('Error al copiar: ' + err);
+            });
+        }
+    </script>
+
+    <footer style="text-align: center; margin-top: 40px; color: #666; font-size: 0.9rem;">
+        <p>Estos ejemplos están diseñados para probar diferentes niveles de detección de IA</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detector de IA en Español</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Detector de IA en Español</h1>
+            <p class="subtitle">Analiza textos para detectar si fueron generados por inteligencia artificial</p>
+
+            <nav class="tabs">
+                <button class="tab-btn active" data-tab="detector">Detector de IA</button>
+                <button class="tab-btn" data-tab="paraphraser">Parafraseador Ético</button>
+            </nav>
+        </header>
+
+        <main>
+            <!-- AI Detector Tab -->
+            <div id="detectorTab" class="tab-content active">
+            <div class="input-section">
+                <div class="section-header">
+                    <h2>Pega tu texto aquí</h2>
+                    <span class="word-count" id="wordCount">0 palabras</span>
+                </div>
+                <textarea
+                    id="textInput"
+                    placeholder="Escribe o pega el texto que deseas analizar..."
+                    rows="12"
+                ></textarea>
+                <div class="button-container">
+                    <button id="analyzeBtn" class="primary-btn">Analizar Texto</button>
+                    <button id="clearBtn" class="secondary-btn">Limpiar</button>
+                </div>
+            </div>
+
+            <div class="progress-section" id="progressSection" style="display: none;">
+                <div class="progress-container">
+                    <div class="progress-text" id="progressText">Iniciando análisis...</div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="progressBar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <div class="section-header">
+                    <h2>Resultados del Análisis</h2>
+                </div>
+
+                <div class="probability-card">
+                    <div class="probability-label">Probabilidad de ser generado por IA</div>
+                    <div class="probability-score" id="probabilityScore">0%</div>
+                    <div class="probability-bar">
+                        <div class="probability-fill" id="probabilityFill"></div>
+                    </div>
+                    <div class="verdict" id="verdict"></div>
+                </div>
+
+                <div class="analysis-details">
+                    <h3>Detalles del Análisis</h3>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">Uniformidad del texto:</span>
+                            <span class="detail-value" id="uniformity">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Complejidad léxica:</span>
+                            <span class="detail-value" id="complexity">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Variación de oraciones:</span>
+                            <span class="detail-value" id="sentenceVariation">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Patrones repetitivos:</span>
+                            <span class="detail-value" id="patterns">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Naturalidad lingüística:</span>
+                            <span class="detail-value" id="naturalness">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Uso de conectores:</span>
+                            <span class="detail-value" id="connectors">-</span>
+                        </div>
+                        <div class="detail-item" id="burstinessItem" style="display: none;">
+                            <span class="detail-label">Variabilidad (Burstiness):</span>
+                            <span class="detail-value" id="burstiness">-</span>
+                        </div>
+                        <div class="detail-item" id="perplexityItem" style="display: none;">
+                            <span class="detail-label">Perplejidad (Perplexity):</span>
+                            <span class="detail-value" id="perplexity">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="highlighted-text">
+                    <h3>Texto Analizado</h3>
+                    <div class="text-display" id="highlightedText"></div>
+                    <div class="legend">
+                        <span class="legend-item"><span class="color-box high-risk"></span> Alta probabilidad IA</span>
+                        <span class="legend-item"><span class="color-box medium-risk"></span> Probabilidad media</span>
+                        <span class="legend-item"><span class="color-box low-risk"></span> Probable humano</span>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <!-- Paraphraser Tab -->
+            <div id="paraphraserTab" class="tab-content">
+                <div class="input-section">
+                    <div class="ethics-notice">
+                        <h3>⚖️ Uso Ético del Parafraseador</h3>
+                        <ul>
+                            <li><strong>Siempre cita la fuente original</strong> - La paráfrasis no elimina la obligación de atribuir</li>
+                            <li><strong>No ocultes la autoría</strong> - Parafrasear contenido de otros como si fuera tuyo es deshonesto</li>
+                            <li><strong>Respeta los derechos de autor</strong> - Verifica que tienes permiso para usar el contenido</li>
+                            <li><strong>Uso educativo</strong> - Esta herramienta es para aprender a parafrasear correctamente</li>
+                        </ul>
+                    </div>
+
+                    <div class="section-header">
+                        <h2>Texto a parafrasear</h2>
+                        <span class="word-count" id="paraWordCount">0 palabras</span>
+                    </div>
+                    <textarea
+                        id="paraTextInput"
+                        placeholder="Pega el texto que deseas parafrasear..."
+                        rows="8"
+                    ></textarea>
+
+                    <div class="paraphrase-options">
+                        <label for="paraphraseLevel">Nivel de paráfrasis:</label>
+                        <select id="paraphraseLevel">
+                            <option value="light">Ligero - Cambios mínimos</option>
+                            <option value="moderate" selected>Moderado - Reestructuración</option>
+                            <option value="heavy">Profundo - Reescritura completa</option>
+                        </select>
+                    </div>
+
+                    <div class="button-container">
+                        <button id="paraphraseBtn" class="primary-btn">Parafrasear Texto</button>
+                        <button id="paraClearBtn" class="secondary-btn">Limpiar</button>
+                    </div>
+                </div>
+
+                <div class="progress-section" id="paraProgressSection" style="display: none;">
+                    <div class="progress-container">
+                        <div class="progress-text" id="paraProgressText">Iniciando paráfrasis...</div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill" id="paraProgressBar"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results-section" id="paraResultsSection" style="display: none;">
+                    <div class="section-header">
+                        <h2>Alternativas de Paráfrasis</h2>
+                    </div>
+
+                    <!-- Warnings -->
+                    <div id="warningsContainer" class="warnings-container" style="display: none;"></div>
+
+                    <!-- Original text -->
+                    <div class="original-text-box">
+                        <h3>Texto Original</h3>
+                        <div class="text-display" id="originalTextDisplay"></div>
+                    </div>
+
+                    <!-- Alternatives -->
+                    <div class="alternatives-container" id="alternativesContainer"></div>
+
+                    <!-- Citation suggestions -->
+                    <div class="citation-box">
+                        <h3>📚 Recuerda Citar la Fuente</h3>
+                        <div id="citationSuggestions">
+                            <p><strong>La paráfrasis NO elimina la necesidad de citar.</strong> Aquí hay algunos formatos:</p>
+                            <div class="citation-formats">
+                                <div class="citation-format">
+                                    <strong>APA:</strong>
+                                    <code id="apaFormat">Apellido, A. (Año). Título del trabajo. Editorial.</code>
+                                </div>
+                                <div class="citation-format">
+                                    <strong>MLA:</strong>
+                                    <code id="mlaFormat">Apellido, Nombre. "Título." Publicación, Fecha.</code>
+                                </div>
+                                <div class="citation-format">
+                                    <strong>Chicago:</strong>
+                                    <code id="chicagoFormat">Apellido, Nombre. Título. Ciudad: Editorial, Año.</code>
+                                </div>
+                            </div>
+                            <div class="citation-advice" id="citationAdvice"></div>
+                        </div>
+                    </div>
+
+                    <!-- Metadata -->
+                    <div class="metadata-box" id="metadataBox">
+                        <h4>Información del Análisis</h4>
+                        <div class="metadata-grid">
+                            <div><strong>Nivel aplicado:</strong> <span id="metaLevel">-</span></div>
+                            <div><strong>Tono detectado:</strong> <span id="metaTone">-</span></div>
+                            <div><strong>Verificación de fidelidad:</strong> <span id="metaFidelity">-</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Esta herramienta analiza patrones lingüísticos comunes en textos generados por IA. Los resultados son estimaciones y deben interpretarse con criterio.</p>
+        </footer>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="detector-enhanced.js"></script>
+    <script src="paraphraser.js"></script>
+    <script src="paraphraser-ui.js"></script>
+</body>
+</html>
